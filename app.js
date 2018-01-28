@@ -1,4 +1,5 @@
-const express       = require("express"),
+const port          = 1337,
+      express       = require("express"),
       app           = express(),
       bodyParser    = require("body-parser"),
       mongoose      = require("mongoose"),
@@ -60,7 +61,6 @@ app.use(indexRoutes);
 app.use("/campgrounds", campgroundRoutes);
 app.use("/campgrounds/:id/comments", commentRoutes);
 
+app.listen(port);
 
-app.listen(process.env.PORT, process.env.IP, function(){
-   console.log("The server has started!"); 
-});
+console.log('Server running at http://localhost:' + port);
