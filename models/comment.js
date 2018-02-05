@@ -2,6 +2,10 @@ var mongoose = require("mongoose");
 
 var commentSchema = mongoose.Schema({
     text: String,
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
     author: {
         id: {
             // mongoose.Schema.Types.objectId is how we can access the unique id provided by Mongo. This tells us which user made each comment

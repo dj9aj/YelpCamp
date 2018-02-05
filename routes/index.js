@@ -16,22 +16,25 @@ router.get("/", function(req, res){
 
 // Show Register form
 router.get("/register", function(req, res){
-    res.render("register");
+    res.render("register", {page: "register"});
 });
 
 // Handle sign up logic
 router.post("/register", function(req, res){
     var newUser = new User({username: req.body.username});
+    if(req.body.adminCode === "admin12345") {
+        newUser.isAdmin = true;
+    }
     // User.register method is provided by the passport-local-mongoose package. We then pass in the new user, with the username coming from req.body.username. We've saved this to a variable in the line above.
     User.register(newUser, req.body.password, function(err, user){
         // If a user tries to sign up with a name that has already registered, then the error will be logged and we short circut the callback by redirecting back to the register form.
         if(err){
-            req.flash("error", err.message);
-            return res.render("register");
+            console.log(err);
+            return res.render("register", {error: err.message});
         }
          // The line below will log the user in and it will store the correct information. It will also run the serializeUser method. We're specifying that we want to use the local strategy.
         passport.authenticate("local")(req, res, function(){
-            req.flash("success", "Welcome to Yelcamp " + user.username);
+            req.flash("success", "Successfully Signed Up! Nice to meet you " + user.username);
             res.redirect("/campgrounds");
         });
     });
@@ -39,7 +42,7 @@ router.post("/register", function(req, res){
 
 // Show Login form
 router.get("/login", function(req, res){
-    res.render("login");
+    res.render("login", {page: "login"});
 });
 
 // Handling Login logic
@@ -71,6 +74,7 @@ router.post('/login', function(req, res, next) {
       var redirectTo = req.session.redirectTo ? req.session.redirectTo : '/campgrounds';
       // delete the redirectTo property from session, whether it exists or not
       delete req.session.redirectTo;
+      req.flash("success", "Welcome Back " + user.username + "!");
       // redirec to whatever was stored inside of redirectTo variable (either previous page or /campgrounds)
       res.redirect(redirectTo);
     });

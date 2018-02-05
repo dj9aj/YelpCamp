@@ -15,7 +15,7 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next) {
                 res.redirect("back");
             } else {
                 // The line below will compare the ID of the user who created the campground, to the user who is currently logged in. .equals is a Mongoose method. This is used because foundCampground.author.id is an object and req.user._id is a string. If we tried to compare via triple equals they would not be the same.
-                if(foundCampground.author.id.equals(req.user._id)){
+                if(foundCampground.author.id.equals(req.user._id) || req.user.isAdmin){
                     next(); 
                 } else {
                     req.flash("error", "You don't have permission to do that");
@@ -40,7 +40,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
                 res.redirect("back");
             } else {
                 // The line below will compare the ID of the user who created the comment to the user who is currently logged in. .equals is a Mongoose method. This is used because foundComment.author.id is an object and req.user._id is a string. If we tried to compare via triple equals they would not be the same.
-                if(foundComment.author.id.equals(req.user._id)){
+                if(foundComment.author.id.equals(req.user._id) || req.user.isAdmin){
                     next(); 
                 } else {
                     req.flash("error", "You don't have permission to do that");

@@ -1,16 +1,18 @@
-const port          = 1337,
-      express       = require("express"),
-      app           = express(),
-      bodyParser    = require("body-parser"),
-      mongoose      = require("mongoose"),
-      flash         = require("connect-flash"),
-      passport      = require("passport"),
-      LocalStrategy = require("passport-local"),
-      methodOverride = require("method-override"),
-      Campground    = require("./models/campground"),
-      Comment       = require("./models/comment"),
-      User          = require("./models/user"),
-      seedDB        = require("./seeds");
+const port              = 1337,
+      express           = require("express"),
+      app               = express(),
+      bodyParser        = require("body-parser"),
+      mongoose          = require("mongoose"),
+      flash             = require("connect-flash"),
+      passport          = require("passport"),
+      LocalStrategy     = require("passport-local"),
+      methodOverride    = require("method-override"),
+      Campground        = require("./models/campground"),
+      Comment           = require("./models/comment"),
+      User              = require("./models/user"),
+      seedDB            = require("./seeds"),
+      geocoder          = require('geocoder');
+      
      
 // Requiring Routes   
 const   commentRoutes     = require("./routes/comments"),
@@ -26,6 +28,8 @@ app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method"));
 app.use(flash());
+// Now moment is available for use in all of the view files via the variable named 'moment'.
+app.locals.moment = require("moment");
 // seedDB(); // Seeds the database
 
 // ===========================
