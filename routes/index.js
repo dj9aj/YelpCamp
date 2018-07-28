@@ -5,7 +5,6 @@ var User = require("../models/user");
 
 
 // ROOT ROUTE - Landing Page Route
-
 router.get("/", function(req, res){
     res.render("landing");
 });
@@ -25,14 +24,13 @@ router.post("/register", function(req, res){
     if(req.body.adminCode === "admin12345") {
         newUser.isAdmin = true;
     }
-    // User.register method is provided by the passport-local-mongoose package. We then pass in the new user, with the username coming from req.body.username. We've saved this to a variable in the line above.
-    User.register(newUser, req.body.password, function(err, user){
-        // If a user tries to sign up with a name that has already registered, then the error will be logged and we short circut the callback by redirecting back to the register form.
-        if(err){
+    // Register new user
+    User.register(newUser, req.body.password, function(err, user) {
+        // If user tries to sign up with a name that has already registered, then the error will be logged and the user will be redirected back to the register form.
+        if (err) {
             console.log(err);
             return res.render("register", {error: err.message});
         }
-         // The line below will log the user in and it will store the correct information. It will also run the serializeUser method. We're specifying that we want to use the local strategy.
         passport.authenticate("local")(req, res, function(){
             req.flash("success", "Successfully Signed Up! Nice to meet you " + user.username);
             res.redirect("/campgrounds");
@@ -45,19 +43,7 @@ router.get("/login", function(req, res){
     res.render("login", {page: "login"});
 });
 
-// Handling Login logic
-// The middleware will take req.body.username & req.body.password and it will authenticate that password with what we have stored in the database for that user. The method comes from passport-local-mongoose.
-// router.post("/login", passport.authenticate("local", 
-//     {
-//         successRedirect: "/campgrounds",
-//         failureRedirect: "/login",
-//         successFlash: "Welcome back!",
-//         failureFlash: true
-//         // We don't actually need the callback, it's just left there to demonstrate that we have a middleware, which is run first before the callback.
-//     }), function(req, res){
-// });
-
-//handling login logic
+//e login logic Hanfl
 router.post('/login', function(req, res, next) {
   // run passport.authenticate method with local argument
   passport.authenticate('local', function(err, user, info) {
@@ -75,7 +61,7 @@ router.post('/login', function(req, res, next) {
       // delete the redirectTo property from session, whether it exists or not
       delete req.session.redirectTo;
       req.flash("success", "Welcome Back " + user.username + "!");
-      // redirec to whatever was stored inside of redirectTo variable (either previous page or /campgrounds)
+      // redirect to whatever was stored inside of redirectTo variable (either previous page or /campgrounds)
       res.redirect(redirectTo);
     });
   })(req, res, next);
@@ -87,6 +73,5 @@ router.get("/logout", function(req, res){
     req.flash("success", "Logged you out!");
     res.redirect("/campgrounds");
 });
-
 
 module.exports = router;
