@@ -1,4 +1,4 @@
-const port              = 1337,
+const port              = process.env.PORT || 1337,
       express           = require("express"),
       app               = express(),
       bodyParser        = require("body-parser"),
