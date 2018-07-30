@@ -10,7 +10,6 @@ const port              = 1337,
       Campground        = require("./models/campground"),
       Comment           = require("./models/comment"),
       User              = require("./models/user"),
-      seedDB            = require("./seeds"),
       geocoder          = require('geocoder');
       
      
