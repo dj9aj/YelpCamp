@@ -21,9 +21,11 @@ const   commentRoutes     = require("./routes/comments"),
       
 
 // Connect to DB
+
 const url = process.env.DATABASEURL || "mongodb://localhost/yelp_camp_v12";
 mongoose.connect(url);
 
+// mongodb://jack:password1@ds259361.mlab.com:59361/yelpcamp_db
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 // Connect stylesheet in public directory.
